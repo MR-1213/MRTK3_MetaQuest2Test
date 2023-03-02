@@ -9,7 +9,7 @@
     "com.microsoft.mrtk.uxcomponents": "file:MixedReality/com.microsoft.mrtk.uxcomponents-3.0.0-pre.14.tgz",
     "com.microsoft.mrtk.uxcomponents.noncanvas": "file:MixedReality/com.microsoft.mrtk.uxcomponents.noncanvas-3.0.0-pre.14.tgz",
     "com.microsoft.mrtk.uxcore": "file:MixedReality/com.microsoft.mrtk.uxcore-3.0.0-pre.14.tgz",
-    "com.synesthesias.plateau-unity-sdk": "file:C:/Users/RSM38/Downloads/PLATEAU-SDK-for-Unity-v1.1.0.tgz",
+    "com.synesthesias.plateau-unity-sdk": "file:C:/Users/RSM38/Downloads/PLATEAU-SDK-for-Unity-v1.0.0.tgz",
     "com.unity.collab-proxy": "1.17.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.15",
