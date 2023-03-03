@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerRespawnController : MonoBehaviour
 {
     [SerializeField, Tooltip("The distance from the GameObject's spawn position at which will trigger a respawn.")]
-    private float distanceThreshold = 30.0f;
+    private float distanceThreshold;
 
     private Vector3 localRespawnPosition;
     private Quaternion localRespawnRotation;
@@ -33,9 +33,9 @@ public class PlayerRespawnController : MonoBehaviour
         //カッコ内の値はマイナスの値になる可能性があるので2乗してその値で考える
         float distanceSqr = (localRespawnPosition - transform.localPosition).sqrMagnitude;
         //現在のY座標を取得
-        float currentPositionY = transform.localPosition.y;
+        float currentPositionY = transform.position.y;
 
-        if (distanceSqr > distanceThresholdSquared && currentPositionY < -3)
+        if (distanceSqr > distanceThresholdSquared && currentPositionY < -10)
         {
             // Reset any velocity from falling or moving when respawning to original location
             if (rigidBody != null)
