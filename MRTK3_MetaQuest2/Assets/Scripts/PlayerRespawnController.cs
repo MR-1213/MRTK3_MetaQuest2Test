@@ -4,38 +4,36 @@ using UnityEngine;
 
 public class PlayerRespawnController : MonoBehaviour
 {
-    [SerializeField, Tooltip("The distance from the GameObject's spawn position at which will trigger a respawn.")]
-    private float distanceThreshold;
+    public LayerMask groundLayer;
 
-    private Vector3 localRespawnPosition;
-    private Quaternion localRespawnRotation;
+    private Vector3 startRespawnPosition;
+    private Vector3 latestRespawnPosition;
+    private Quaternion startRespawnRotation;
+    private Quaternion latestRespawnRotation;
     private Rigidbody rigidBody;
-    private float distanceThresholdSquared;
-
-    private void Awake() 
-    {
-        if(distanceThreshold < 0)
-        {
-            Debug.LogError("distanceThresholdの値は正の値を指定してください");
-        }
-    }
+    private float depthThreshold = -10.0f;
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        localRespawnPosition = transform.localPosition;
-        localRespawnRotation = transform.localRotation;
-        distanceThresholdSquared = distanceThreshold * distanceThreshold;
+        startRespawnPosition = transform.position;
+        startRespawnRotation = transform.rotation;
     }
 
     private void LateUpdate()
     {
-        //カッコ内の値はマイナスの値になる可能性があるので2乗してその値で考える
-        float distanceSqr = (localRespawnPosition - transform.localPosition).sqrMagnitude;
+        //地面にいる場合、最新の現在地を更新
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, groundLayer))
+        {
+            latestRespawnPosition = hit.point + new Vector3(0, 0.7f, 0);
+            latestRespawnRotation = transform.rotation;
+        }
+
         //現在のY座標を取得
         float currentPositionY = transform.position.y;
 
-        if (distanceSqr > distanceThresholdSquared && currentPositionY < -10)
+        if (currentPositionY < depthThreshold)
         {
             // Reset any velocity from falling or moving when respawning to original location
             if (rigidBody != null)
@@ -44,9 +42,21 @@ public class PlayerRespawnController : MonoBehaviour
                 rigidBody.angularVelocity = Vector3.zero;
             }
 
-            transform.localPosition = localRespawnPosition;
-            transform.localRotation = localRespawnRotation;
+            transform.position = latestRespawnPosition;
+            transform.rotation = latestRespawnRotation;
         }
+    }
+
+    public void ReturnStartPoint()
+    {
+        if (rigidBody != null)
+        {
+            rigidBody.velocity = Vector3.zero;
+            rigidBody.angularVelocity = Vector3.zero;
+        }
+
+        transform.position = startRespawnPosition;
+        transform.rotation = startRespawnRotation;
     }
     
 }
