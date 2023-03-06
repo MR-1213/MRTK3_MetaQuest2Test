@@ -11,6 +11,7 @@
 [Mm]emoryCaptures/
 .PLATEAU
 default-2021.dwlt
+PLATEAU-SDK-for-Unity-v1.0.0.tgz
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
