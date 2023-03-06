@@ -97,7 +97,7 @@
       }
     },
     "com.synesthesias.plateau-unity-sdk": {
-      "version": "file:C:/Users/RSM38/Downloads/PLATEAU-SDK-for-Unity-v1.0.0.tgz",
+      "version": "file:PLATEAU-SDK-for-Unity-v1.0.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
