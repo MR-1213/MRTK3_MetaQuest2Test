@@ -41,22 +41,22 @@ public class PlayerUIController : MonoBehaviour
             {
                 if(hit.collider.gameObject.CompareTag("LeftMapButton"))
                 {
-                    mapCamera.transform.position += new Vector3(-5, 0, 0);
+                    mapCamera.transform.localPosition += new Vector3(-5, 0, 0);
                 }
 
                 if(hit.collider.gameObject.CompareTag("RightMapButton"))
                 {
-                    mapCamera.transform.position += new Vector3(5, 0, 0);
+                    mapCamera.transform.localPosition += new Vector3(5, 0, 0);
                 }
 
                 if(hit.collider.gameObject.CompareTag("UpMapButton"))
                 {
-                    mapCamera.transform.position += new Vector3(0, 0, 5);
+                    mapCamera.transform.localPosition += new Vector3(0, 0, 5);
                 }
 
                 if(hit.collider.gameObject.CompareTag("DownMapButton"))
                 {
-                    mapCamera.transform.position += new Vector3(0, 0, -5);
+                    mapCamera.transform.localPosition += new Vector3(0, 0, -5);
                 }
             }
 
