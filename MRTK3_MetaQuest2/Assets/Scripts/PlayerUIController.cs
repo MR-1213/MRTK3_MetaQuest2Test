@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class PlayerUIController : MonoBehaviour
 {
@@ -12,10 +13,13 @@ public class PlayerUIController : MonoBehaviour
     [SerializeField] private Camera mapCamera;
     [SerializeField] private RectTransform menuPlate;
     [SerializeField] private RectTransform mapPlate;
+    [SerializeField] private GameObject rightController;
     private bool canvasActive = false;
+
 
     private void Update() 
     {
+
         if(OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch))
         {
             canvasActive = !canvasActive;
@@ -27,6 +31,42 @@ public class PlayerUIController : MonoBehaviour
                 canvas.transform.rotation = Quaternion.Euler(0, mainCamera.transform.rotation.eulerAngles.y, 0);
             }
         }
+
+        if(OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+        {
+            Ray ray = new Ray(rightController.transform.position, rightController.transform.forward);
+
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit, 7.0f))
+            {
+                if(hit.collider.gameObject.CompareTag("LeftMapButton"))
+                {
+                    mapCamera.transform.position += new Vector3(-5, 0, 0);
+                }
+
+                if(hit.collider.gameObject.CompareTag("RightMapButton"))
+                {
+                    mapCamera.transform.position += new Vector3(5, 0, 0);
+                }
+
+                if(hit.collider.gameObject.CompareTag("UpMapButton"))
+                {
+                    mapCamera.transform.position += new Vector3(0, 0, 5);
+                }
+
+                if(hit.collider.gameObject.CompareTag("DownMapButton"))
+                {
+                    mapCamera.transform.position += new Vector3(0, 0, -5);
+                }
+            }
+
+        }
+    }
+
+    public void SetCanvasActiveFalse()
+    {
+        canvas.SetActive(false);
+        canvasActive = !canvasActive;
     }
 
     public void OnDisplayMapButton()
@@ -46,7 +86,7 @@ public class PlayerUIController : MonoBehaviour
         }
         mapCamera.fieldOfView = newValue;
 
-        playerIconController.StandardScaleDown();
+        playerIconController.StandardScaleChange(newValue);
     }
 
     public void OnContractionButton()
@@ -58,7 +98,7 @@ public class PlayerUIController : MonoBehaviour
         }
         mapCamera.fieldOfView = newValue;
 
-        playerIconController.StandardScaleUp();
+        playerIconController.StandardScaleChange(newValue);
     }
 
     public void OnBackButton(RectTransform otherPlate)

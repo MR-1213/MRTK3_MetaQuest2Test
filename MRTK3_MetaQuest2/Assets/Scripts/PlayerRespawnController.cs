@@ -6,9 +6,9 @@ public class PlayerRespawnController : MonoBehaviour
 {
     public LayerMask groundLayer;
 
-    private Vector3 startRespawnPosition;
+    [SerializeField] private PlayerUIController playerUIController;
+    [SerializeField] private Transform startRespawnPoint;
     private Vector3 latestRespawnPosition;
-    private Quaternion startRespawnRotation;
     private Quaternion latestRespawnRotation;
     private Rigidbody rigidBody;
     private float depthThreshold = -10.0f;
@@ -16,8 +16,6 @@ public class PlayerRespawnController : MonoBehaviour
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        startRespawnPosition = transform.position;
-        startRespawnRotation = transform.rotation;
     }
 
     private void LateUpdate()
@@ -49,14 +47,16 @@ public class PlayerRespawnController : MonoBehaviour
 
     public void ReturnStartPoint()
     {
+        playerUIController.SetCanvasActiveFalse();
+        
         if (rigidBody != null)
         {
             rigidBody.velocity = Vector3.zero;
             rigidBody.angularVelocity = Vector3.zero;
         }
 
-        transform.position = startRespawnPosition;
-        transform.rotation = startRespawnRotation;
+        transform.position = startRespawnPoint.position;
+        transform.rotation = startRespawnPoint.rotation;
     }
     
 }
