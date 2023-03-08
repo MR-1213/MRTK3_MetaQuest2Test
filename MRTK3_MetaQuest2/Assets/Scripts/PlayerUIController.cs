@@ -20,7 +20,7 @@ public class PlayerUIController : MonoBehaviour
     private void Update() 
     {
 
-        if(OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch))
+        if(OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch))
         {
             canvasActive = !canvasActive;
             canvas.SetActive(canvasActive);

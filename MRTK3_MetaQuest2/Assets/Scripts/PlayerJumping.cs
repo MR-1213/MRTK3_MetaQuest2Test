@@ -7,6 +7,7 @@ public class PlayerJumping : MonoBehaviour
 
     [SerializeField, Tooltip("接地判定用のレイヤーマスク")]
     private LayerMask groundMask;
+    
     private Rigidbody playerRigidbody;
 
     private void Start() 
@@ -18,13 +19,14 @@ public class PlayerJumping : MonoBehaviour
     private bool CanJump()
     {
         // 接地している場合にジャンプできる
-        return (Physics.Raycast(transform.position, Vector3.down,0.6f, groundMask));
+        return (Physics.Raycast(transform.position, Vector3.down,0.8f, groundMask));
+        //return true;
     }
 
     void Update()
     {
         // 左グリップボタンが押され、ジャンプ可能な場合、ジャンプする
-        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch) && CanJump())
+        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch) && CanJump())
         {
             // 上方向に力を加えてジャンプさせる
             playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
