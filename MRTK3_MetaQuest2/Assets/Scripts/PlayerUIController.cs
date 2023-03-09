@@ -6,11 +6,10 @@ using TMPro;
 
 public class PlayerUIController : MonoBehaviour
 {
-    public GameObject mainCamera;
-    public GameObject canvas;
-
-    [SerializeField] private PlayerIconController playerIconController;
+    [SerializeField] private GameObject mainCamera;
     [SerializeField] private Camera mapCamera;
+    [SerializeField] private PlayerIconController playerIconController;
+    [SerializeField] private GameObject canvas;
     [SerializeField] private RectTransform menuPlate;
     [SerializeField] private RectTransform mapPlate;
     [SerializeField] private GameObject rightController;
@@ -19,7 +18,7 @@ public class PlayerUIController : MonoBehaviour
 
     private void Update() 
     {
-
+        //マップなどのメニューバーの表示・非表示をする。(Yボタン)
         if(OVRInput.GetDown(OVRInput.Button.Two, OVRInput.Controller.LTouch))
         {
             canvasActive = !canvasActive;
@@ -32,13 +31,16 @@ public class PlayerUIController : MonoBehaviour
             }
         }
 
+        //マップの移動操作。長押しを検知する。(左右トリガー)
         if(OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
+            //コントローラーの向いている方向にレイを飛ばす
             Ray ray = new Ray(rightController.transform.position, rightController.transform.forward);
 
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, 7.0f))
             {
+                //ヒットして、ボタンであったら操作
                 if(hit.collider.gameObject.CompareTag("LeftMapButton"))
                 {
                     mapCamera.transform.localPosition += new Vector3(-5, 0, 0);
@@ -63,12 +65,18 @@ public class PlayerUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// スタート地点にリスポーンする際にメニューバーを非表示させる
+    /// </summary>
     public void SetCanvasActiveFalse()
     {
         canvas.SetActive(false);
         canvasActive = !canvasActive;
     }
 
+    /// <summary>
+    /// Display A Mapボタンが押されたとき
+    /// </summary>
     public void OnDisplayMapButton()
     {
         menuPlate.DOAnchorPos(new Vector2(-400, 0), 1.0f).SetEase(Ease.OutCubic);
@@ -77,6 +85,9 @@ public class PlayerUIController : MonoBehaviour
         mapPlate.DOAnchorPos(new Vector2(345, 0), 1.0f).SetEase(Ease.OutCubic);
     }
 
+    /// <summary>
+    /// マップで拡大ボタンが押されたとき
+    /// </summary>
     public void OnExpansionButton()
     {
         float newValue = mapCamera.fieldOfView + 10.0f;
@@ -89,6 +100,9 @@ public class PlayerUIController : MonoBehaviour
         playerIconController.StandardScaleChange(newValue);
     }
 
+    /// <summary>
+    /// マップで縮小ボタンが押されたとき
+    /// </summary>
     public void OnContractionButton()
     {
         float newValue = mapCamera.fieldOfView - 10.0f;
@@ -101,6 +115,10 @@ public class PlayerUIController : MonoBehaviour
         playerIconController.StandardScaleChange(newValue);
     }
 
+    /// <summary>
+    /// 戻るボタンが押されたとき
+    /// </summary>
+    /// <param name="otherPlate"></param>
     public void OnBackButton(RectTransform otherPlate)
     {
         menuPlate.DOAnchorPos(new Vector2(0, 0), 0.4f).SetEase(Ease.OutCubic);

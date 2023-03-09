@@ -10,6 +10,7 @@ public class NavigationToDestinationController : MonoBehaviour
     [SerializeField] private Transform cursor;
 
     private NavMeshAgent navMeshAgent;
+    private float distanceThreshold = 5.0f;
 
     private void Start() 
     {
@@ -19,9 +20,27 @@ public class NavigationToDestinationController : MonoBehaviour
         navMeshAgent.updateRotation = false;    
     }
 
-    private void Update() 
+    public void StartNavigation()
     {
-        cursor.rotation = Quaternion.LookRotation(navMeshAgent.steeringTarget - transform.position, Vector3.up);
-        navMeshAgent.nextPosition = transform.position;
+        cursor.gameObject.SetActive(true);
+        StartCoroutine(NavigationToDestination());
+    }
+
+    IEnumerator NavigationToDestination()
+    {
+        while(true)
+        {
+            float distance = (this.transform.position - destination_GFO.position).sqrMagnitude;
+            if(distance < distanceThreshold * distanceThreshold)
+            {
+                cursor.gameObject.SetActive(false);
+                yield break;
+            }
+
+            cursor.rotation = Quaternion.LookRotation(navMeshAgent.steeringTarget - transform.position, Vector3.up);
+            navMeshAgent.nextPosition = transform.position;
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
