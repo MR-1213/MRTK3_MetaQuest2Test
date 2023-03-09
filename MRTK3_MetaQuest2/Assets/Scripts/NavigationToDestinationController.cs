@@ -7,6 +7,8 @@ public class NavigationToDestinationController : MonoBehaviour
 {
     public Transform destination_GFO;
 
+    [SerializeField] private GameObject targetBuilding;
+    [SerializeField] private Material hightlightMaterial;
     [SerializeField] private Transform cursor;
 
     private NavMeshAgent navMeshAgent;
@@ -23,6 +25,7 @@ public class NavigationToDestinationController : MonoBehaviour
     public void StartNavigation()
     {
         cursor.gameObject.SetActive(true);
+        targetBuilding.GetComponent<Renderer>().material = hightlightMaterial;
         StartCoroutine(NavigationToDestination());
     }
 

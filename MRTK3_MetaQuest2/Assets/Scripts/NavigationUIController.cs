@@ -20,7 +20,7 @@ public class NavigationUIController : MonoBehaviour
 
             if(mainCamera != null)
             {
-                navigationUICanvas.transform.localPosition = new Vector3(mainCamera.transform.localPosition.x, -0.3f, mainCamera.transform.localPosition.z) + mainCamera.transform.forward * 1.5f;
+                navigationUICanvas.transform.position = mainCamera.transform.position + mainCamera.transform.forward * 1.5f;
                 navigationUICanvas.transform.localRotation = Quaternion.Euler(30.0f, mainCamera.transform.rotation.eulerAngles.y, 0);
             }
         }
