@@ -17,15 +17,17 @@ public class NavigationToDestinationController : MonoBehaviour
     private void Start() 
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.SetDestination(destination_GFO.position);
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;    
     }
 
     public void StartNavigation()
     {
+        //カーソルをアクティブにする
         cursor.gameObject.SetActive(true);
+        //向かう先の建物のマテリアルをハイライトさせる
         targetBuilding.GetComponent<Renderer>().material = hightlightMaterial;
+
         StartCoroutine(NavigationToDestination());
     }
 
@@ -33,6 +35,8 @@ public class NavigationToDestinationController : MonoBehaviour
     {
         while(true)
         {
+            cursor.transform.position = new Vector3(transform.position.x, transform.position.y - 0.8f, transform.position.z) + transform.forward * 1.2f;
+
             float distance = (this.transform.position - destination_GFO.position).sqrMagnitude;
             if(distance < distanceThreshold * distanceThreshold)
             {
@@ -40,10 +44,14 @@ public class NavigationToDestinationController : MonoBehaviour
                 yield break;
             }
 
-            cursor.rotation = Quaternion.LookRotation(navMeshAgent.steeringTarget - transform.position, Vector3.up);
-            navMeshAgent.nextPosition = transform.position;
+            if(!navMeshAgent.pathPending)
+            {
+                cursor.rotation = Quaternion.LookRotation(navMeshAgent.steeringTarget - transform.position, Vector3.up);
+                navMeshAgent.nextPosition = transform.position;
+                
+            }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 }
